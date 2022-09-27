@@ -19,6 +19,7 @@ client = MongoClient('localhost', 27017)
 db = client["hiphopdb"]
 artists_collection = db["artists"]
 records_collection = db["labels"]
+hiphop_collection = db["hiphop"]
 
 @app.get("/api/artists")
 async def getArtists():
@@ -34,3 +35,10 @@ async def getRecords():
     for record in records_collection.find():
         records.append(record)
     return records
+
+@app.get("/api/hiphop")
+async def getHipHop():
+    hiphop = []
+    for h in hiphop_collection.find():
+        hiphop.append(h)
+    return hiphop

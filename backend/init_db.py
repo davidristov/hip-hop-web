@@ -1,14 +1,11 @@
-# from http import client
-import re
 from SPARQLWrapper import SPARQLWrapper, JSON
 from pymongo import MongoClient
-import urllib.request
-
 
 client = MongoClient('localhost', 27017)
 db = client["hiphopdb"]
 artists_collection = db["artists"]
 records_collection = db["labels"]
+hiphop_collection = db["hiphop"]
  
 artists = ["Eminem", "Akon", "Snoop_Dogg", "Tupac_Shakur"]
 records = ["Def_Jam_Recordings", "Aftermath_Entertainment", "Cash_Money_Records"]
@@ -47,10 +44,9 @@ for artist in artists:
         id += 1
         artists_collection.insert_one(dict)
 
-id = 0
+id = 1
 
 for record in records:
-    print(record)
     sparql.setQuery("""
         PREFIX dbp: <http://dbpedia.org/resource/>
         PREFIX dbr: <http://dbpedia.org/resource/>
@@ -69,8 +65,6 @@ for record in records:
     )
     sparql.setReturnFormat(JSON)
     ret = sparql.queryAndConvert()
-
-    print(ret)
 
     location = []
     abstract = []
@@ -101,3 +95,41 @@ for record in records:
     records_collection.insert_one(dict)
     id += 1
     
+sparql.setQuery("""
+        PREFIX dbp: <http://dbpedia.org/resource/>
+        PREFIX dbr: <http://dbpedia.org/resource/>
+        PREFIX dbp: <http://dbpedia.org/property/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+        SELECT *
+        WHERE {
+            dbr:Hip_hop_music dbo:abstract ?abstract ;
+                   dbo:instrument ?instrument ;
+                   dbo:thumbnail ?thumbnail .
+            FILTER(lang(?abstract)="en")     
+        }
+        """
+    )
+
+sparql.setReturnFormat(JSON)
+ret = sparql.queryAndConvert()
+id = 1
+
+instruments = []
+abstract = []
+thumbnail = []
+
+for r in ret["results"]["bindings"]:
+    if r["instrument"]["value"] not in instruments: instruments.append(r["instrument"]["value"])
+    if r["abstract"]["value"] not in abstract: abstract.append(r["abstract"]["value"])
+    if r["thumbnail"]["value"] not in thumbnail: thumbnail.append(r["thumbnail"]["value"])
+
+
+dict = {
+    "_id": id,
+    "abstract": abstract,
+    "thumbnail": thumbnail,
+    "instruments": instruments
+}
+
+hiphop_collection.insert_one(dict)
