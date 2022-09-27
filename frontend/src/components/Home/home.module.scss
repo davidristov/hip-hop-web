@@ -6,10 +6,23 @@
   max-height: calc(100vh - 60px - constant(safe-area-inset-top));
   height: calc(100vh - 60px - constant(safe-area-inset-top));
   overflow: hidden;
+  overflow-y: scroll;
 
   .content {
     width: 80%;
     margin: auto;
     font-size: 20px;
+  }
+
+  img {
+    float: left;
+    padding: 0 5px 0 0;
+    width: 400px;
+    height: 320px;
+  }
+
+  div {
+    text-align: justify;
+    text-justify: inter-word;
   }
 }
