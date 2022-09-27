@@ -10,8 +10,8 @@ db = client["hiphopdb"]
 artists_collection = db["artists"]
 records_collection = db["labels"]
  
-artists = ["Eminem", "Akon", "50_Cent"]
-records = ["Aftermath_Entertainment", "Death_Row_Records"]
+artists = ["Eminem", "Akon", "Snoop_Dogg", "Tupac_Shakur"]
+records = ["Def_Jam_Recordings", "Aftermath_Entertainment", "Cash_Money_Records"]
 id = 1 # used for primary key, tmp solution
 
 for artist in artists:
@@ -44,15 +44,13 @@ for artist in artists:
             "abstract": r["abstract"]["value"],
             "thumbnail": r["thumbnail"]["value"]
             }
-            # image = r["thumbnail"]["value"]
-            # print(image)
-            # urllib.request.urlretrieve(image, "./frontend/" + dict["name"] + ".jpg")
         id += 1
         artists_collection.insert_one(dict)
 
 id = 0
 
 for record in records:
+    print(record)
     sparql.setQuery("""
         PREFIX dbp: <http://dbpedia.org/resource/>
         PREFIX dbr: <http://dbpedia.org/resource/>
@@ -62,8 +60,9 @@ for record in records:
         SELECT *
         WHERE {
             dbr:%s dbo:abstract ?abstract ;
-                   dbo:location ?location ;
-                   dbp:country ?country .
+                   dbp:location ?location ;
+                   dbp:country ?country ;
+                   dbp:founder ?founder .
             FILTER(lang(?abstract)="en")     
         }
         """ % (record)
@@ -71,20 +70,33 @@ for record in records:
     sparql.setReturnFormat(JSON)
     ret = sparql.queryAndConvert()
 
+    print(ret)
+
     location = []
     abstract = []
     country = []
+    founders = []
+
     for r in ret["results"]["bindings"]:
-        location.append(r["location"]["value"])
-        abstract.append(r["abstract"]["value"])
-        country.append(r["country"]["value"])
+        if(r["location"]["value"] not in location):
+            location.append(r["location"]["value"])
+
+        if r["abstract"]["value"] not in abstract: abstract.append(r["abstract"]["value"])
+        if(r["founder"]["value"] not in founders):
+            founders.append(r["founder"]["value"])
+
+        c = r["country"]["value"].split("/")[-1]
+        if (c not in country):
+            country.append(c)
 
     dict = {
         "_id": id,
         "name": record,
         "abstract": abstract,
         "location": location,
-        "country": country
+        "country": country,
+        "founders": founders
+        # "foundingYear": r["foundingYear"]["value"],
     }
     records_collection.insert_one(dict)
     id += 1

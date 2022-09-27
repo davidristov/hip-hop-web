@@ -1,0 +1,30 @@
+.wrapper {
+  max-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px - env(safe-area-inset-top));
+  height: calc(100vh - 60px - env(safe-area-inset-top));
+  max-height: calc(100vh - 60px - constant(safe-area-inset-top));
+  height: calc(100vh - 60px - constant(safe-area-inset-top));
+  overflow: hidden;
+  overflow-y: scroll;
+
+  .content {
+    width: 80%;
+    margin: auto;
+    font-size: 20px;
+    overflow-y: hidden;
+  }
+
+  img {
+    float: left;
+    padding: 0 5px 0 0;
+    width: 330px;
+    height: 420px;
+  }
+
+  div {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+}

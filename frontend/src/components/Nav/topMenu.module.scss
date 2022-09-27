@@ -1,0 +1,29 @@
+.wrapper {
+  margin: auto;
+  padding-top: calc(constant(safe-area-inset-top));
+  padding-top: calc(env(safe-area-inset-top));
+  height: calc(60px + constant(safe-area-inset-top));
+  height: calc(60px + env(safe-area-inset-top));
+  background-color: rgba(rgb(143, 132, 132), 0.6);
+  nav {
+    padding-top: 10px;
+    width: 80%;
+    margin: auto;
+    span {
+      color: black;
+      font-size: 25px;
+      &:hover {
+        color: gray;
+      }
+    }
+    .ld {
+      font-size: 35px;
+      font-family: "Courier New", Courier, monospace;
+    }
+    .btnbox {
+      float: right;
+      text-align: center;
+      padding: 1px 16px;
+    }
+  }
+}
