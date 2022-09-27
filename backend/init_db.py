@@ -7,7 +7,7 @@ artists_collection = db["artists"]
 records_collection = db["labels"]
 hiphop_collection = db["hiphop"]
  
-artists = ["Eminem", "Akon", "Snoop_Dogg", "Tupac_Shakur"]
+artists = ["Eminem", "Akon", "Snoop_Dogg", "Dr._Dre", "Kendrick_Lamar"]
 records = ["Def_Jam_Recordings", "Aftermath_Entertainment", "Cash_Money_Records"]
 id = 1 # used for primary key, tmp solution
 
@@ -24,7 +24,8 @@ for artist in artists:
             dbr:%s dbo:abstract ?abstract ;
                 dbo:birthDate ?birthDate ;
                 dbo:birthPlace ?birthPlace ;
-                dbo:thumbnail ?thumbnail .
+                dbo:thumbnail ?thumbnail ;
+                dbo:birthName ?birthName .
             FILTER(lang(?abstract)="en")
         }
         """ % (artist)
@@ -39,7 +40,8 @@ for artist in artists:
             "birthDate": r["birthDate"]["value"],
             "birthPlace": r["birthPlace"]["value"],
             "abstract": r["abstract"]["value"],
-            "thumbnail": r["thumbnail"]["value"]
+            "thumbnail": r["thumbnail"]["value"],
+            "birthName": r["birthName"]["value"]
             }
         id += 1
         artists_collection.insert_one(dict)
@@ -105,7 +107,8 @@ sparql.setQuery("""
         WHERE {
             dbr:Hip_hop_music dbo:abstract ?abstract ;
                    dbo:instrument ?instrument ;
-                   dbo:thumbnail ?thumbnail .
+                   dbo:thumbnail ?thumbnail ;
+                   dbp:culturalOrigins ?culturalOrigins .
             FILTER(lang(?abstract)="en")     
         }
         """
@@ -124,12 +127,12 @@ for r in ret["results"]["bindings"]:
     if r["abstract"]["value"] not in abstract: abstract.append(r["abstract"]["value"])
     if r["thumbnail"]["value"] not in thumbnail: thumbnail.append(r["thumbnail"]["value"])
 
-
 dict = {
     "_id": id,
     "abstract": abstract,
     "thumbnail": thumbnail,
-    "instruments": instruments
+    "instruments": instruments,
+    "culturalOrigins": r["culturalOrigins"]["value"]
 }
 
 hiphop_collection.insert_one(dict)

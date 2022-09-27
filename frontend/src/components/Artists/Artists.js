@@ -27,6 +27,7 @@ export default function Artists() {
               <p>
                 Birth Place: <a href={data.birthPlace}>{data.birthPlace}</a>
               </p>
+              <p>Birth Name: {data.birthName}</p>
             </>
             <hr />
           </>

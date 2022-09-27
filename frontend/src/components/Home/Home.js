@@ -22,6 +22,7 @@ export default function Home() {
               <div class="text">
                 <p>{data.abstract}</p>
               </div>
+              <p>Origins: {data.culturalOrigins}</p>
               <p>
                 Instruments:{" "}
                 {data.instruments.map((instrument) => (
