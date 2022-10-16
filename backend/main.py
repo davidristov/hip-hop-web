@@ -28,7 +28,6 @@ async def getArtists():
         artists.append(doc)
     return artists
 
-
 @app.get("/api/records")
 async def getRecords():
     records = []

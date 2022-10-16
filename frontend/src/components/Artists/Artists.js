@@ -20,16 +20,12 @@ export default function Artists() {
             <>
               <h3>{data.name}</h3>
               <img alt="" src={data.thumbnail} />
-
               <p>{data.abstract}</p>
-
               <p>Birth Date: {data.birthDate}</p>
-              <p>
-                Birth Place: <a href={data.birthPlace}>{data.birthPlace}</a>
-              </p>
+              <p> Birth Place: <a href={data.birthPlace}>{data.birthPlace}</a></p>
               <p>Birth Name: {data.birthName}</p>
             </>
-            <hr />
+            <hr/>
           </>
         ))}
       </div>

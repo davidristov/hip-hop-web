@@ -11,6 +11,8 @@ artists = ["Eminem", "Akon", "Snoop_Dogg", "Dr._Dre", "Kendrick_Lamar"]
 records = ["Def_Jam_Recordings", "Aftermath_Entertainment", "Cash_Money_Records"]
 id = 1 # used for primary key, tmp solution
 
+artists = ["Eminem", "Akon", "Snoop_Dogg", "Dr._Dre", "Kendrick_Lamar"]
+
 for artist in artists:
     sparql = SPARQLWrapper("http://dbpedia.org/sparql")
     sparql.setQuery("""
